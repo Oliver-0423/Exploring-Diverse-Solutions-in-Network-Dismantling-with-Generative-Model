@@ -1,0 +1,31 @@
+#gflownet
+alg: db # fl or db
+buffer_size: 100000
+reward_exp: 1000
+anneal: none
+anneal_epochs: 10 #前几个epochs使用退火策略,后稳定到设定值reward_exp
+seed: 9
+device: 0 # 0 means cuda:0, -1 means cpu
+rollout_batch_size: 512
+test_batch_size: -1
+num_epochs: 100
+cpu_use: 32
+on_policy: True
+batch_size: 512
+train_steps: 30
+leaf_coef: 1
+reward_shape: None
+env_a: 5
+env_b: 0
+#GNN model
+model:
+  num_layer: 3
+  hidden_dim: 256
+  lr: 1e-3
+  learn_eps: True
+  pool: add
+  conv: Gin
+
+
+
+
