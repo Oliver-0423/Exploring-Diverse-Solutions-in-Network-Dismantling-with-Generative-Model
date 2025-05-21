@@ -23,9 +23,7 @@ from algo import DetailedBalanceTransitionBuffer, DetailedBalance
 import os
 from datetime import datetime
 
-# 不能使用buffer直接向模型提供batch,因为在训练时将batch进行to(device)操作时会把buffer中的batch也包括,
-# 导致大量batch进入到显存无法释放,使用batch.from_data_list可以把二者隔绝开,
-# 使buffer中的数据始终存在cpu上,或者在训练结束后使用.cpu()在将其放到cpu上
+
 # 获取当前时间并格式化为字符串
 now = datetime.now().strftime("%m_%d_%H_%M")
 torch.backends.cudnn.enabled = True
@@ -190,73 +188,7 @@ def eval(alg,testloder,device,env_a,cpu_use): #
 
 
 if __name__ == '__main__':
-    # seed_all(9)
-    # device = torch.device('cuda')
-    # model_path = 'home/oliversun/PycharmProjects/torchgfn_learn/03_11_20_11_model/80alg.pt'
-    # test_model()
-    train()
-    #test_model()
-
-'''
-eval part
-
-    import os
-    g_dict = {}
-    input_folder = 'data/dataset_real_AGDM'
-    # if not os.path.exists(output_folder):
-    #     os.makedirs(output_folder)
-    for filename in os.listdir(input_folder):
-        file_path = os.path.join(input_folder, filename)
-        g = igraph.Graph.Read_GraphML(file_path)
-        G=g.to_networkx()
-        G.remove_edges_from(nx.selfloop_edges((G)))
-        g_dict[filename] = G
-    print(final_eval(path='80alg.pt',g_dict=g_dict,device=torch.device('cuda')))
-    dataset = "dataset_real_AGDM"
-    input_folder = dataset
-    nx_list = []
-    for filename in os.listdir(input_folder):
-        file_path = os.path.join(input_folder, filename)
-        g = igraph.Graph.Read_GraphML(file_path)
-        G = g.to_networkx()
-        G.remove_edges_from(nx.selfloop_edges((G)))
-        nx.write_edgelist(G,path='data/dataset_real/'+filename[:-8]+".edgelist",data=False)
     
-'''
-    # train()
-    # model=GCN()
-    # model.to(device)
-    # graph = nx.Graph()
-    # graph.add_edges_from([(0, 1), (1, 2), (1, 3), (3, 2), [0, 4], [0, 5], [4, 5], [3, 6], [2, 6], [5, 7], [5, 8]])
-    # graph_list = [graph, graph, graph, graph]
-    # #print(rollout(gbatch=graph_list,model=model))
-    # buffer=train()
-    # #print(buffer[0][0],buffer[0][1],buffer[0][2],buffer[0][3])
-    # #print(buffer[0][0][0].x,buffer[0][0][1].x,buffer[0][0][2].x)
-    # #print(buffer[0][1][0],buffer[0][1][1])
+    train()
 
-    # test about cuda memory
-    # n=nx.barabasi_albert_graph(100,3)
-    # p1=from_networkx(n)
-    # b1=Batch.from_data_list([p1,p1,p1,p1])
-    # #print("1:{}".format(torch.cuda.memory_allocated(0)))
-    # b1.to(device)
-    # #print("2:{}".format(torch.cuda.memory_allocated(0)))
-    # a=b1.ptr
-    # b=torch.sum(a).item()
-    # torch.cuda.empty_cache()
-    # #print(a)
-    # #print(b)
-    # del b1,a
-    # #print("3:{}".format(torch.cuda.memory_allocated(0)))
 
-    # glist=[]                                       #10,15,20,25
-    # for i in range(4):
-    #     g=nx.barabasi_albert_graph(10+i*5,2)
-    #     glist.append(g)
-    # device = torch.device('cpu')
-    # alg,buffer=get_alg_buffer(alg='fl',device=torch.device('cpu'))
-    # batch=rollout(glist,alg,device)
-    # print(batch)
-    # buffer.add_batch(batch[0])
-    # print(buffer.sample(128))
